@@ -8,15 +8,12 @@ chrome.browserAction.onClicked.addListener((tab) => {
   chrome.tabs.sendMessage(tab.id, str);
 });
 
-// chrome.runtime.onMessage.addListener(function (word) {
-//   if (word.message == "not supported") {
-//     chrome.browserAction.setIcon({ path: "icon.png" });
-//   } else if (word.message == "disable") {
-//     chrome.browserAction.setIcon({ path: "download.png" });
-//   } else if (word.message == "enable") {
-//     chrome.browserAction.setIcon({ path: "images.png" });
-//   } else {
-//     chrome.browserAction.setIcon({ path: "icon.png" });
-//   }
-//   console.log(word.message);
-// });
+chrome.runtime.onMessage.addListener(function (request) {
+  if (request.state == "open") {
+    chrome.browserAction.setIcon({ path: "C:\Users\shrey\OneDrive\Desktop\Picture-in-Picture\open.png" });
+  } else if (request.state == "close") {
+    chrome.browserAction.setIcon({ path: "C:\Users\shrey\OneDrive\Desktop\Picture-in-Picture\close.png" });
+  } else {
+    console.log("image issue");
+  }
+});

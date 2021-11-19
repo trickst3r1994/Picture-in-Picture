@@ -1,24 +1,24 @@
 async function pipCreation(video) {
+  var key = 0;
   try {
-    if (!document.pictureInPictureEnabled) {
-      chrome.runtime.sendMessage({ message: "not supported" });
-    } else if (document.pictureInPictureElement) {
+    if (document.pictureInPictureElement) {
       await document.exitPictureInPicture();
-      chrome.runtime.sendMessage({ message: "enable" });
+      chrome.runtime.sendMessage({ state: "close" });
     } else {
       await video.requestPictureInPicture();
-      chrome.runtime.sendMessage({ message: "disable" });
+      chrome.runtime.sendMessage({ state: "open" });
     }
   } catch (err) {
+    chrome.runtime.sendMessage({ state: "disabled" });
     // Video failed to enter/leave Picture-in-Picture mode.
-    chrome.runtime.sendMessage({ message: "not supported" });
   }
+  console.log(key);
 }
 
 function selectVideo() {
   document.querySelectorAll("video").forEach((item) => {
     if (item.paused == true) {
-      console.log("1");
+      console.log("ok");
     } else {
       pipCreation(item);
     }
@@ -27,5 +27,4 @@ function selectVideo() {
 
 chrome.runtime.onMessage.addListener(function () {
   selectVideo();
-  console.log("success");
 });
